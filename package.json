@@ -1,5 +1,5 @@
 {
-  "name": "preentrega1-backend2-coderhouse",
+  "name": "entregafinal-backend2-coderhouse",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Alexgv0/Preentrega1-BackEnd2-CoderHouse.git"
+    "url": "git+https://github.com/Alexgv0/EntregaFinal-BackEnd2-CoderHouse.git"
   },
   "author": "Kevin Alex Muñoz Pascal",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Alexgv0/Preentrega1-BackEnd2-CoderHouse/issues"
+    "url": "https://github.com/Alexgv0/EntregaFinal-BackEnd2-CoderHouse/issues"
   },
-  "homepage": "https://github.com/Alexgv0/Preentrega1-BackEnd2-CoderHouse#readme",
+  "homepage": "https://github.com/Alexgv0/EntregaFinal-BackEnd2-CoderHouse#readme",
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
