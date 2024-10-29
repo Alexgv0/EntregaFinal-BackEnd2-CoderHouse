@@ -1,6 +1,6 @@
-const Product = require("../models/products.model");
+import Product from "../models/products.model.js";
 
-exports.getAllUsersPaginate = async (req, res) => {
+export const getAllUsersPaginate = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * limit;
@@ -19,6 +19,6 @@ exports.getAllUsersPaginate = async (req, res) => {
     }
 };
 
-exports.renderRealTimeProducts = (req, res) => {
+export const renderRealTimeProducts = (req, res) => {
     res.render("realTimeProducts");
 }

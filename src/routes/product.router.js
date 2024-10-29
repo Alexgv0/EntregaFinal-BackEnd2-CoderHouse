@@ -1,22 +1,22 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const productController = require("../controllers/productController");
-const { validateCreateProduct, validatePid, validateUpdateProduct } = require("../middlewares/validationMiddlewares");
+import { deleteProduct, updateProduct, createProduct, findProductById, listAllProducts } from "../controllers/productController.js";
+import { validateCreateProduct, validatePid, validateUpdateProduct } from "../middlewares/validationMiddlewares.js";
 
 // Lista de todos los productos
-router.get("/", productController.listAllProducts);
+router.get("/", listAllProducts);
 
 // Muestra el producto con el pid proporcionado
-router.get("/:pid", validatePid, productController.findProductById);
+router.get("/:pid", validatePid, findProductById);
 
 // Crea un nuevo producto
-router.post("/", validateCreateProduct, productController.createProduct);
+router.post("/", validateCreateProduct, createProduct);
 
 // Toma un producto y actualiza los campos enviados desde body sin modificar el id
-router.put("/:pid", validatePid, validateUpdateProduct, productController.updateProduct);
+router.put("/:pid", validatePid, validateUpdateProduct, updateProduct);
 
 // Elimina el producto con el pid indicado
-router.delete("/:pid", validatePid, productController.deleteProduct);
+router.delete("/:pid", validatePid, deleteProduct);
 
-module.exports = router;
+export default router;

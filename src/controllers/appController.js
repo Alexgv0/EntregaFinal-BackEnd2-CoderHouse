@@ -1,4 +1,4 @@
-const Product = require("../models/products.model");
+import Product from "../models/products.model.js";
 
 /*
     Deberá poder recibir por query params un limit (opcional), una page (opcional), un sort (opcional) y un query (opcional)
@@ -24,7 +24,7 @@ const Product = require("../models/products.model");
     Se deberá poder buscar productos por categoría o por disponibilidad, 
     y se deberá poder realizar un ordenamiento de estos productos de manera ascendente o descendente por precio. 
 */
-exports.getFilteredAndSortedProductPaginate = async (req, res) => {
+export const getFilteredAndSortedProductPaginate = async (req, res) => {
     try {
         const limit = req.query.limit || 10;
         const page = req.query.page || 1;

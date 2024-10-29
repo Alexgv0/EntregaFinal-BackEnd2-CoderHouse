@@ -1,42 +1,38 @@
 import express from "express";
-import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
-
 import "dotenv/config";
-
 import { srcPath } from "./utils/utils.js";
 import path from "path";
-
-import initMongoDB from "./config/dbConfig.js";
-
 import routes from "./routes/index.js";
-import handlebarsRouter from "./routes/handlebars.router.js";
-
-import passport from "./config/passportConfig.js";
-
+import {getFilteredAndSortedProductPaginate} from "./controllers/appController.js"
 
 const app = express();
 
 // Iniciacion de Mongo
+import initMongoDB from "./config/dbConfig.js";
 initMongoDB();
 
 // Seteo de Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(express.json()); // Uso de json
+app.use(express.urlencoded({ extended: true })); // Uso de req.body
+app.use(cookieParser()); // Uso de cookies
+app.use(express.static(path.join(srcPath, "public"))); // Uso de archivos estaticos
 
 // Seteo de Handlebars
-app.use(express.static(path.join(srcPath, "public")));
-app.engine("handlebars", handlebars.engine());
+import handlebars from "express-handlebars";
+import handlebarsRouter from "./routes/handlebars.router.js";
+app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.set("views", path.join(srcPath, "views"));
 
 // Inicializacion de passport
+import passport from "./config/passportConfig.js";
 app.use(passport.initialize());
-//app.use(passport.session());
 
 // Routes
 app.use("/api", routes);
+
+app.get("/", getFilteredAndSortedProductPaginate);
 
 app.use("/", handlebarsRouter);
 

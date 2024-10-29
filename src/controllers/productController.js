@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const Product = require("./../models/products.model");
+import mongoose from "mongoose";
+import Product from "./../models/products.model.js";
 
 // Lista de todos los productos
-exports.listAllProducts = async (req, res) => {
+export const listAllProducts = async (req, res) => {
     try {
         const products = await Product.find();
         if (!products || products.length === 0) {
@@ -16,7 +16,7 @@ exports.listAllProducts = async (req, res) => {
 };
 
 // Muestra el producto con el pid proporcionado
-exports.findProductById = async (req, res) => {
+export const findProductById = async (req, res) => {
     try {
         const pid = req.params.pid;
         const product = await Product.findById(pid);
@@ -40,7 +40,7 @@ exports.findProductById = async (req, res) => {
     thumbnails : Array de Strings (que contengan las rutas donde están almacenadas las imágenes referentes a dicho producto)
 }
 */
-exports.createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
     try {
         const { title, description, code, price, status, stock, category, thumbnails } = req.body;
         const newProduct = await Product.create({ title, description, code, price, status, stock, category, thumbnails });
@@ -55,7 +55,7 @@ exports.createProduct = async (req, res) => {
 };
 
 // Toma un producto y actualiza los campos enviados desde body sin modificar el id
-exports.updateProduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
     try {
         const pid = req.params.pid;
         const { title, description, code, price, status, stock, category, thumbnails } = req.body;
@@ -84,7 +84,7 @@ exports.updateProduct = async (req, res) => {
 };
 
 // Elimina el producto con el pid indicado
-exports.deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
     try {
         const pid = req.params.pid;
         if (!mongoose.isValidObjectId(pid)) {

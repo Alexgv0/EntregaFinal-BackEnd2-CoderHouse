@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const Cart = require("./../models/carts.model");
-const Product = require("./../models/products.model");
+import mongoose from "mongoose";
+import Cart from "./../models/carts.model.js";
+import Product from "./../models/products.model.js";
 
-exports.searchCart = async (req, res) => {
+export const searchCart = async (req, res) => {
     try {
         const cid = req.params.cid;
         const cart = await Cart.findById(cid).populate("products.product");
@@ -20,7 +20,7 @@ exports.searchCart = async (req, res) => {
     products: Array que contendrá objetos que representen cada producto
 }
 */
-exports.createCart = async (req, res) => {
+export const createCart = async (req, res) => {
     try {
         const { products } = req.body;
         const cart = await Cart.create({ products });
@@ -38,7 +38,7 @@ exports.createCart = async (req, res) => {
 
     Además, si un producto ya existente intenta agregarse al producto, incrementar el campo quantity de dicho producto. 
 */
-exports.addProductToCart = async (req, res) => {
+export const addProductToCart = async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const cart = await Cart.findById(cid);
@@ -70,7 +70,7 @@ exports.addProductToCart = async (req, res) => {
 };
 
 // Deberá eliminar del carrito el producto seleccionado.
-exports.deleteProductFromCart = async (req, res) => {
+export const deleteProductFromCart = async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const payload = await Cart.updateOne({ _id: cid }, { $pull: { products: { product: pid } } });
@@ -86,7 +86,7 @@ exports.deleteProductFromCart = async (req, res) => {
 };
 
 // Deberá actualizar todos los productos del carrito con un arreglo de productos.
-exports.updateAllProductsFromCart = async (req, res) => {
+export const updateAllProductsFromCart = async (req, res) => {
     try {
         const { cid } = req.params;
         const { products } = req.body;
@@ -106,7 +106,7 @@ exports.updateAllProductsFromCart = async (req, res) => {
 };
 
 // Deberá poder actualizar SÓLO la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
-exports.updateProductQuantityFormCart = async (req, res) => {
+export const updateProductQuantityFormCart = async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const { quantity } = req.body;
@@ -128,7 +128,7 @@ exports.updateProductQuantityFormCart = async (req, res) => {
 };
 
 // Deberá eliminar todos los productos del carrito
-exports.deleteAllProductsFromCart = async (req, res) => {
+export const deleteAllProductsFromCart = async (req, res) => {
     try {
         const { cid } = req.params;
         const payload = await Cart.updateOne({ _id: cid }, { $set: { products: [] } });

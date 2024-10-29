@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const cartSchema = new mongoose.Schema(
     {
@@ -7,7 +7,7 @@ const cartSchema = new mongoose.Schema(
                 {
                     _id: false,
                     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
-                    quantity: { type: Number, required: true, min: 1},
+                    quantity: { type: Number, required: true, min: 1 },
                 },
             ],
             required: true,
@@ -20,4 +20,4 @@ const cartSchema = new mongoose.Schema(
 
 const Cart = mongoose.model("Cart", cartSchema);
 
-module.exports = Cart;
+export default Cart;

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getAllUsersPaginate, renderRealTimeProducts } from "../controllers/handlebarsController.js";
 
 const router = Router();
 
@@ -10,8 +11,12 @@ router.get("/register", (req, res) => {
     res.render("register");
 });
 
-router.get("/", (req, res) => {
+router.get("/index", (req, res) => {
     res.render("index");
 });
+
+router.get("/products", getAllUsersPaginate);
+
+router.get("/realtimeproducts", renderRealTimeProducts);
 
 export default router;

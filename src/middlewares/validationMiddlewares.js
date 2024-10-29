@@ -1,8 +1,8 @@
-const { default: mongoose } = require("mongoose");
-const Cart = require("../models/carts.model");
-const Product = require("../models/products.model");
+import mongoose from "mongoose";
+import Cart from "../models/carts.model.js";
+import Product from "../models/products.model.js";
 
-exports.validateCid = async (req, res, next) => {
+export const validateCid = async (req, res, next) => {
     const cid = req.params.cid;
     const cart = await Cart.findById(cid);
     if (!cid) {
@@ -18,7 +18,7 @@ exports.validateCid = async (req, res, next) => {
     next();
 };
 
-exports.validatePid = async (req, res, next) => {
+export const validatePid = async (req, res, next) => {
     const pid = req.params.pid;
     const product = await Product.findById(pid);
     if (!pid) {
@@ -34,7 +34,7 @@ exports.validatePid = async (req, res, next) => {
     next();
 };
 
-exports.validateCreateProduct = (req, res, next) => {
+export const validateCreateProduct = (req, res, next) => {
     const { title, description, code, price, status, stock, category, thumbnails } = req.body;
 
     if (!(title && description && code && price && status && stock && category && thumbnails)) {
@@ -72,7 +72,7 @@ exports.validateCreateProduct = (req, res, next) => {
     next();
 };
 
-exports.validateUpdateProduct = (req, res, next) => {
+export const validateUpdateProduct = (req, res, next) => {
     const { title, description, code, price, status, stock, category, thumbnails } = req.body;
 
     if (price !== undefined) {
@@ -123,7 +123,7 @@ exports.validateUpdateProduct = (req, res, next) => {
     next();
 };
 
-exports.validateCartProducts = async (req, res, next) => {
+export const validateCartProducts = async (req, res, next) => {
     const { products } = req.body;
 
     if (!Array.isArray(products) || products.length === 0) {
@@ -142,7 +142,7 @@ exports.validateCartProducts = async (req, res, next) => {
     next();
 };
 
-exports.validateCart = async (req, res, next) => {
+export const validateCart = async (req, res, next) => {
     const { cid } = req.params;
     const cart = await Cart.findById(cid);
     if (cart.length === 0) {
@@ -152,7 +152,7 @@ exports.validateCart = async (req, res, next) => {
     next();
 };
 
-exports.validateQuantity = (req, res, next) => {
+export const validateQuantity = (req, res, next) => {
     const { quantity } = req.body;
     if (isNaN(parseInt(quantity)) || parseInt(quantity) < 0) {
         return res.status(400).json({ error: `Cantidad pasada por body inválida: ${quantity}` });
