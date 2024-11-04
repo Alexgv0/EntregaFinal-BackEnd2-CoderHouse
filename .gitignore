@@ -130,3 +130,7 @@ dist
 .pnp.*
 
 codigo guardado
+
+.env.dev
+.env.prod
+.env.stage

@@ -1,4 +1,4 @@
-import Product from "../models/products.model.js";
+
 
 export const getAllUsersPaginate = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
@@ -9,10 +9,10 @@ export const getAllUsersPaginate = async (req, res) => {
         const products = await Product.find().skip(skip).limit(limit).lean();
         const count = await Product.countDocuments();
         const totalPages = Math.ceil(count / limit);
-        const nextPage = (page < totalPages) ? page + 1 : null;
-        const prevPage = page != 0? page-1: null;
+        const nextPage = page < totalPages ? page + 1 : null;
+        const prevPage = page != 0 ? page - 1 : null;
 
-        res.render("index", { title: "Productos", products, currentPage: page, prevPage, nextPage, totalPages, limit});
+        res.render("index", { title: "Productos", products, currentPage: page, prevPage, nextPage, totalPages, limit });
     } catch (error) {
         console.error("Error al obtener los productos:", error);
         res.status(500).json({ error: "Error al obtener los productos" });
@@ -21,4 +21,4 @@ export const getAllUsersPaginate = async (req, res) => {
 
 export const renderRealTimeProducts = (req, res) => {
     res.render("realTimeProducts");
-}
+};

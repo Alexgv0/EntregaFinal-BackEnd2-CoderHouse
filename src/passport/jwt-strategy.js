@@ -1,7 +1,7 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../config/config.js";
-import { getUserById } from "../services/userServices.js";
+import { userDao } from "../dao/persistence.js";
 
 // Extrae el token de las cookies
 const cookieExtractor = req => req?.cookies?.token;
@@ -18,7 +18,7 @@ const verifyToken = async (jwt_payload, done) => {
             return done(null, false, { message: "Token inválido o usuario no encontrado" });
         }
 
-        const user = await getUserById(jwt_payload.id);
+        const user = await userDao.get(jwt_payload.id);
 
         if (!user) {
             return done(null, false, { message: "Usuario no encontrado"});

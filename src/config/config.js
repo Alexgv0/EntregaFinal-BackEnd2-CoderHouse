@@ -1,11 +1,14 @@
-export const PORT = process.env.PORT || 3000;
+import cli from "./cli.js";
+import dotenv from "dotenv";
 
-export const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost:27017/ProyectoFinal-BackEnd1-CoderHouse";
+const path = cli.env === "PROD" ? "./.env.prod" : cli.env === "STAGE" ? "./.env.stg" : cli.env === "DEV" ? "./.env.dev" : "./.env";
 
-export const dbConnectionType = process.env.MONGO_URL ? "Atlas" : "Local"
+dotenv.config({ path });
 
+console.log(`Abriendo servidor en entorno ${cli.env || "DEFAULT"} ...`);
+
+export const PORT = cli.port || process.env.PORT || 3000;
 export const SECRET_KEY = process.env.SECRET_KEY || 123;
-
 export const saltRounds = 10;
 
 // Para passport-google-oauth20

@@ -1,6 +1,6 @@
 import app from "./src/app.js";
-import {PORT} from "./src/config/config.js"
-import Product from "./src/models/products.model.js";
+import {PORT} from "./src/config/config.js";
+//import Product from "./src/models/mongo/Products.js"; //FIXME:
 import { Server } from "socket.io";
 
 const data = [{ "Servidor escuchando al puerto": PORT, URL: `http://localhost:${PORT}` }];

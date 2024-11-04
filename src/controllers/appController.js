@@ -1,4 +1,3 @@
-import Product from "../models/products.model.js";
 
 /*
     Deberá poder recibir por query params un limit (opcional), una page (opcional), un sort (opcional) y un query (opcional)

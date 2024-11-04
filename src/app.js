@@ -1,6 +1,5 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import "dotenv/config";
 import { srcPath } from "./utils/utils.js";
 import path from "path";
 import routes from "./routes/index.js";
@@ -8,9 +7,9 @@ import {getFilteredAndSortedProductPaginate} from "./controllers/appController.j
 
 const app = express();
 
-// Iniciacion de Mongo
-import initMongoDB from "./config/dbConfig.js";
-initMongoDB();
+// Iniciacion de base de datos
+//import initMongoDB from "./config/database.js";
+//initMongoDB();
 
 // Seteo de Middlewares
 app.use(express.json()); // Uso de json

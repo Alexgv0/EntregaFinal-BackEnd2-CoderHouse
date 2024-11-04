@@ -2,7 +2,7 @@ import passport from "passport";
 import * as localStrategy from "../passport/local-strategy.js";
 import { currentStrategy } from "../passport/jwt-strategy.js";
 import googleStrategy from "../passport/google-strategy.js";
-import { getUserById } from "../services/userServices.js";
+//import { getUserById } from "../services/userServices.js";
 
 // Registrar estrategias
 // Local

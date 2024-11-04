@@ -1,18 +1,6 @@
-// Connect ATLAS DB
-const mongoose = require("mongoose");
-require("dotenv").config();
+// Configuracion de MongoDB
+export const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost:27017/ProyectoFinal-BackEnd1-CoderHouse";
+export const MongoDBConnectionType = process.env.MONGO_URL ? "Atlas" : "Local";
+export const MongoDBConfig = {
 
-const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ProyectoFinal-BackEnd1-CoderHouse";
-
-// Posible options
-
-const connectDB = mongoose
-    .connect(mongoURI) // Posible options
-    .then(() => {
-        console.log("Conectado a MongoDB Atlas");
-    })
-    .catch(error => {
-        console.error("Error al intentar conectar a MongoDB Atlas: ", error);
-    });
-
-module.exports = connectDB;
+};

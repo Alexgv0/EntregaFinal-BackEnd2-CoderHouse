@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { saltRounds } from "../config/config.js";
+import {saltRounds} from "../config/config.js";
 
 import { fileURLToPath } from 'url'; 
 import path from "path";

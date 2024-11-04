@@ -1,5 +1,5 @@
-import User from "../models/userModel.js";
 import { hashPassword } from "../utils/utils.js";
+import { userDao } from "./../dao/persistence.js";
 
 /**
  * Crea un nuevo usuario en la base de datos.
@@ -7,7 +7,6 @@ import { hashPassword } from "../utils/utils.js";
  * @returns {Object} - El usuario creado.
  */
 export const createUser = async userData => {
-    console.log(userData);
     try {
         const newUserData = {
             first_name: userData?.first_name || null,
@@ -24,12 +23,12 @@ export const createUser = async userData => {
             throw new Error("No se creo el usuario porque la edad no es realista");
         }
         
-        const existingUser = await getUserByEmail(newUserData.email);
+        const existingUser = await userDao.getByEmail(newUserData.email);
         if (existingUser) {
             throw new Error("No se creo el usuario porque ya existe");
         }
 
-        const newUser = await User.create(newUserData);
+        const newUser = await userDao.create(newUserData);
         if (!newUser) {
             throw new Error("Error desconocido al intentar crear el usuario");
         }
@@ -40,31 +39,11 @@ export const createUser = async userData => {
     }
 };
 
-/**
- * Obtiene un usuario por su email.
- * @param {String} userEmail - El email del usuario.
- * @returns {Object|null} - El usuario si se encuentra, o null si no.
- */
-export const getUserByEmail = async email => {
-    email = email.toLowerCase();
-    const user = await User.findOne({ email });
-    return user;
-};
-
-/**
- * Elimina un usuario buscado por su ID
- * @param {String} ID - ID del usuario.
- * @returns {Object|null} - Informacion del usuario eliminado si se encuentra, o null si no.
- */
-export const deleteUser = async id => {
-    return await User.findByIdAndDelete(id);
-};
-
-/**
- * Busca un usuario por su ID
- * @param {String} ID - ID del usuario.
- * @returns {Object|null} - Devuelve el usuario si se encuentra, o null si no.
- */
-export const getUserById = async id => {
-    return await User.findById(id);
-};
+export const getUserByEmail = async (email) => {
+    try {
+        return await userDao.getByEmail(email);
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
