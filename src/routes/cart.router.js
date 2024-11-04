@@ -13,7 +13,7 @@ router.get("/:cid", validateCartCid, validateFields, searchCart);
 router.post("/", validateCartProducts, validateFields, createCart);
 
 // Agrega el producto al arreglo “products” del carrito seleccionado
-router.post("/:cid/product/:pid", validateCartCid, validateProductPid, validateCartProducts, validateFields, addProductToCart);
+router.post("/:cid/product/:pid", validateCartCid, validateProductPid, validateFields, addProductToCart);
 
 // Deberá eliminar del carrito el producto seleccionado.
 router.delete("/:cid/products/:pid", validateCartCid, validateProductPid, validateFields, deleteProductFromCart);

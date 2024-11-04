@@ -12,8 +12,7 @@ export default class CartServices {
         try {
             return await cartDao.get(cid);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -26,8 +25,7 @@ export default class CartServices {
         try {
             return await cartDao.getProducts(cid);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
     
@@ -38,10 +36,9 @@ export default class CartServices {
      */
     async createCartService(data) {
         try {
-            return await cartDao.create({ data });
+            return await cartDao.create(data);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -56,8 +53,7 @@ export default class CartServices {
             const cart = this.getCartById(cid);
             return cart.products.find(item => item.product.equals(pid));
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -74,8 +70,7 @@ export default class CartServices {
                 throw new Error("No se pudo agregar el producto al carrito");
             } else return await cartDao.getProduct(cid, pid);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -89,8 +84,7 @@ export default class CartServices {
         try {
             return await cartDao.removeProduct(cid, pid);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -104,8 +98,7 @@ export default class CartServices {
         try {
             return await cartDao.updateProducts(cid,products);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -120,8 +113,7 @@ export default class CartServices {
         try {
             return await cartDao.updateProductQuantity(cid, pid, quantity);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     };
 
@@ -134,8 +126,7 @@ export default class CartServices {
         try {
             return await cartDao.clearCart(cid);
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error.message);
         }
     }
 }

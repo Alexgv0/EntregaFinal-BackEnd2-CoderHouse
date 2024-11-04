@@ -12,7 +12,7 @@ export default class MongoDao {
        try {
            return await this.model.findById(id);
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
     
@@ -25,7 +25,7 @@ export default class MongoDao {
        try {
            return await this.model.create(data);
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
     
@@ -36,9 +36,9 @@ export default class MongoDao {
     */
    async update(id, obj) {
        try {
-           return await this.model.findByIdAndUpdate(id, obj, { new: true });
+           return await this.model.findByIdAndUpdate({ _id: id }, { obj }, { new: true });
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
     
@@ -51,7 +51,7 @@ export default class MongoDao {
        try {
            return await this.model.findByIdAndDelete(id);
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
 
@@ -63,7 +63,7 @@ export default class MongoDao {
         try {
             return await this.model.find({});
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
 }

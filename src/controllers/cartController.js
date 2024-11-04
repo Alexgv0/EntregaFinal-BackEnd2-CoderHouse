@@ -24,7 +24,7 @@ export const searchCart = async (req, res) => {
         const cart = await CS.searchAndPopulateCart(cid);
         res.status(200).json(cart);
     } catch (error) {
-        console.error("Error al buscar productos: ", error);
+        console.error("Error al buscar productos: ", error.message);
         res.status(500).json({ message: "Error al buscar productos en los carritos" });
     }
 };
@@ -44,10 +44,13 @@ export const searchCart = async (req, res) => {
 export const createCart = async (req, res) => {
     try {
         const { products } = req.body;
-        const cart = await CS.createCartService(products);
+        const cart = await CS.createCartService({products});
+        if (condition) {
+            
+        }
         res.status(201).json({ message: "carrito agregado correctamente", payload: cart });
     } catch (error) {
-        console.error("Error al agregar carrito: ", error);
+        console.error("Error al agregar carrito: ", error.message);
         res.status(500).json({ message: "Error al agregar carrito a los carritos" });
     }
 };
@@ -75,7 +78,7 @@ export const addProductToCart = async (req, res) => {
             payload: product,
         });
     } catch (error) {
-        console.error("Error desde router al agregar producto al carrito: ", error);
+        console.error("Error desde router al agregar producto al carrito: ", error.message);
         res.status(500).json({ message: "No se pudo agregar el producto al carrito" });
     }
 };
@@ -89,13 +92,10 @@ export const addProductToCart = async (req, res) => {
 export const deleteProductFromCart = async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const payload = CS.removeProductFromCart(cid, pid);
-        if (payload.modifiedCount === 0) {
-            return res.status(200).json({ message: "Producto no modificado. Probablemente el carrito o producto no fueron encontrados" });
-        }
+        const payload = await CS.removeProductFromCart(cid, pid);
         res.status(200).json({ message: "Producto eliminado del carrito correctamente", payload });
     } catch (error) {
-        console.error("Error al eliminar producto del carrito: ", error);
+        console.error("Error al eliminar producto del carrito:", error.message);
         res.status(500).json({ message: "Error al eliminar el producto del carrito" });
     }
 };
@@ -110,13 +110,13 @@ export const updateAllProductsFromCart = async (req, res) => {
     try {
         const { cid } = req.params;
         const { products } = req.body;
-        const payload = CS.changeAllProductsFromCart(cid, products);
+        const payload = await CS.changeAllProductsFromCart(cid, products);
         if (payload.modifiedCount === 0) {
             return res.status(200).json({ message: "Producto no modificado. Puede que ya se haya cambiado anteriormente" });
         }
         return res.status(200).json({ message: "El carrito fue actualizado correctamente", payload });
     } catch (error) {
-        console.log(`Error al intentar actualizar los productos del carrito: ${error}`);
+        console.log(`Error al intentar actualizar los productos del carrito: ${error.message}`);
         return res.status(500).json({ error: "Error al intentar actualizar los productos del carrito" });
     }
 };
@@ -131,7 +131,7 @@ export const updateProductQuantityFormCart = async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const { quantity } = req.body;
-        const payload = CS.changeProductQuantityFromCart(cid, pid, quantity);
+        const payload = await CS.changeProductQuantityFromCart(cid, pid, quantity);
         if (payload.modifiedCount === 0) {
             return res.status(200).json({
                 error: `Producto no modificado. Probablemente no se encontro el producto en el carrito especificado o la cantidad ya fue modificada anteriormente`,
@@ -156,10 +156,7 @@ export const updateProductQuantityFormCart = async (req, res) => {
 export const deleteAllProductsFromCart = async (req, res) => {
     try {
         const { cid } = req.params;
-        const payload = CS.emptyCart();
-        if (payload.modifiedCount === 0) {
-            return res.status(200).json({ error: `Producto no modificado. Probablemente el carrito no fue encontrado o esta vacio` });
-        }
+        const payload = await CS.emptyCart(cid);
         return res.status(200).json({ message: "Carrito vaciado correctamente", payload });
     } catch (error) {
         console.error("Error al intentar vaciar el carrito: ", error);

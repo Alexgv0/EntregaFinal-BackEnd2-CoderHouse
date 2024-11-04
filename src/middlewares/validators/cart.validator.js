@@ -1,12 +1,14 @@
 import { body, param } from "express-validator";
 import { validateMongoID, isInDB} from "./validationMiddlewares.js";
 import { prodDao } from "../../dao/persistence.js";
+import mongoose from "mongoose";
 
 export const validateCartCid = [...validateMongoID("cid"), isInDB("cid")];
 
 export const validateCartProducts = [
     body("products")
-        .isArray({ min: 1 }).withMessage("El carrito debe tener al menos un producto."),
+        .exists().withMessage("El arreglo del carrito es requerido")
+        .isArray().withMessage("El carrito debe de ser un arreglo."),
     
     body("products.*.product")
         .exists().withMessage("El ID del producto es requerido.")
