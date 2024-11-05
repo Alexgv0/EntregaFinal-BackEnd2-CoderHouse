@@ -3,8 +3,10 @@ import { validateMongoID, isInDB} from "./validationMiddlewares.js";
 import { prodDao } from "../../dao/persistence.js";
 import mongoose from "mongoose";
 
+// Valida el cid
 export const validateCartCid = [...validateMongoID("cid"), isInDB("cid")];
 
+// Valida los datos pasados por body para el momento de crear o modificar el carrito
 export const validateCartProducts = [
     body("products")
         .exists().withMessage("El arreglo del carrito es requerido")

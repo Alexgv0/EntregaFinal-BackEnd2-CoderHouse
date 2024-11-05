@@ -1,6 +1,7 @@
 import { body, param } from "express-validator";
 import { validateMongoID, isInDB} from "./validationMiddlewares.js";
 
+// Valida el pid
 export const validateProductPid = [validateMongoID("pid"), isInDB("pid")];
 
 const validateCreateOrUpdateProduct = (isUpdate = false) => [
@@ -43,6 +44,8 @@ const validateCreateOrUpdateProduct = (isUpdate = false) => [
         .withMessage("Cada thumbnail debe ser una cadena."),
 ];
 
+// Valida los datos pasados por body para crear el producto
 export const validateCreateProduct = validateCreateOrUpdateProduct(false);
 
+// Valida los datos pasados por body para modificar el producto
 export const validateUpdateProduct = validateCreateOrUpdateProduct(true);
