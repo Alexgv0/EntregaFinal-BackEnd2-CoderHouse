@@ -1,5 +1,8 @@
 import express from "express";
-import { login, loginOrRegisterGoogle, register } from "../controllers/authController.js";
+import AuthController from "../controllers/authController.js";
+
+const AC = new AuthController();
+const { login, loginOrRegisterGoogle, register } = AC;
 
 const router = express.Router();
 router.use(express.json());

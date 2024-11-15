@@ -1,36 +1,68 @@
 import { body, param } from "express-validator";
-import { cartDao, prodDao } from "../../dao/persistence.js";
+import ProductServices from "../../services/productServices.js";
+import CartServices from "../../services/cartServices.js";
+const PS = new ProductServices();
+const CS = new CartServices();
+
 
 export const validateMongoID = idName => {
-    const mongoIdMessage = idName => `El ${idName} debe ser un ID de MongoDB valido.`;
     return [
         param(idName)
         .exists().withMessage(`El ${idName} es requerido.`)
-        .isMongoId().withMessage(mongoIdMessage(idName)),
+        .isMongoId().withMessage(`El ${idName} debe ser un ID de MongoDB valido.`)
     ];
 };
 
-export const isInDB = (idName) => {
-    return async (req, res, next) => {
-        const id = req.params[idName];
-        let item = null;
-        switch (idName) {
-            case "pid":
-                item = await prodDao.get(id);
-                break;
-            
-            case "cid":
-                item = await cartDao.get(id);
-                break;
-            
-            default:
-                throw new Error(`El ${idName} no coincide con los casos disponibles para seleccionar el modelo`);
-            break;
-        }
-        
-        if (!item || item.length === 0) {
-            return res.status(404).json({ message: `No se encontro el item con ${idName}: ${id}, o está vacío.` });
-        }
-        next();
-    } 
+export const validateExistenceInDB = (idName, inBody = false) => {
+    if (inBody) {
+        return [
+            body(idName)
+            .custom(
+                async (value) => {
+                    let item = null;
+                    switch (idName) {
+                        case "pid":
+                            item = await PS.getById(value);
+                            break;
+                        case "products.*.product":
+                            item = await PS.getById(value);
+                            break;
+                        case "cid":
+                            item = await CS.getById(value);
+                            break;
+                        default:
+                            throw new Error(`El ${idName} no coincide con los casos disponibles para seleccionar el modelo`);
+                        }
+                    if (!item) {
+                        throw new Error(`El item con ${idName}: ${value} no existe en la base de datos.`);
+                    }
+                    return true;
+                })
+        ];
+    } else {
+        return [
+            param(idName)
+            .custom(
+                async (value) => {
+                    let item = null;
+                    switch (idName) {
+                        case "pid":
+                            item = await PS.getById(value);
+                            break;
+                        case "products.*.product":
+                            item = await PS.getById(value);
+                            break;
+                        case "cid":
+                            item = await CS.getById(value);
+                            break;
+                        default:
+                            throw new Error(`El ${idName} no coincide con los casos disponibles para seleccionar el modelo`);
+                        }
+                    if (!item) {
+                        throw new Error(`El item con ${idName}: ${value} no existe en la base de datos.`);
+                    }
+                    return true;
+                })
+        ];
+    }
 };

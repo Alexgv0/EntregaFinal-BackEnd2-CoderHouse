@@ -1,7 +1,13 @@
-import { cartDao } from "./../dao/persistence.js"
+import Services from "./classServices.js";
+import { cartDao } from "../daos/persistence.js";
+import CartsRepository from "../repositories/CartsRepository.js";
 
-export default class CartServices {
-    constructor() {}
+const CR = new CartsRepository();
+
+export default class CartServices extends Services {
+    constructor() {
+        super(cartDao);
+    }
 
     /**
      * Busca un carrito con el cid y lo retorna.
@@ -10,11 +16,11 @@ export default class CartServices {
      */
     async getCartById(cid) {
         try {
-            return await cartDao.get(cid);
+            return await cartDao.getById(cid);
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Busca un carrito por su cid y lo devuelve monstrando tambien sus productos con populate
@@ -27,8 +33,8 @@ export default class CartServices {
         } catch (error) {
             throw new Error(error.message);
         }
-    };
-    
+    }
+
     /**
      * Crea un carrito en la base de datos con la informacion de data.
      * @param {Object} data - Informacion necesaria para crear el carrito
@@ -40,7 +46,7 @@ export default class CartServices {
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Dados un cid y un pid devuelve el producto si esta dentro de el carrito
@@ -50,12 +56,12 @@ export default class CartServices {
      */
     async searchProductInCart(cid, pid) {
         try {
-            const cart = this.getCartById(cid);
+            const cart = await this.getCartById(cid);
             return cart.products.find(item => item.product.equals(pid));
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Dado un cid y un pid se agrega un producto al carrito o se aumenta su cantidad en uno.
@@ -72,7 +78,7 @@ export default class CartServices {
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Dados un cid y pid remueve el producto del carrito o le baja la cantidad en uno.
@@ -86,7 +92,7 @@ export default class CartServices {
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Dado un cid y un products intercambia todos los productos del carrito por los productos del arreglo products.
@@ -96,11 +102,11 @@ export default class CartServices {
      */
     async changeAllProductsFromCart(cid, products) {
         try {
-            return await cartDao.updateProducts(cid,products);
+            return await CR.updateProducts(cid, products);
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Dados un cid y un pid la cantidad del producto con pid dentro del carrito con cid se cambia por el valor de quantity.
@@ -111,11 +117,17 @@ export default class CartServices {
      */
     async changeProductQuantityFromCart(cid, pid, quantity) {
         try {
+            const product = await cartDao.getProduct(cid, pid);
+            if (!product) {
+                return { message: "No se encontro el producto en el carrito especificado", status: 404 };
+            } else if (product.quantity === quantity) {
+                return { message: "La cantidad del producto ya es igual a la cantidad ingresada", status: 200 };
+            }
             return await cartDao.updateProductQuantity(cid, pid, quantity);
         } catch (error) {
             throw new Error(error.message);
         }
-    };
+    }
 
     /**
      * Dado un cid se intercambia el arreglo de productos de el carrito con ese id por un arreglo vacio.

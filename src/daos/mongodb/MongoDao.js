@@ -5,16 +5,29 @@ export default class MongoDao {
 
     /**
      * Busca un elemento por su ID y lo devuelve
-     * @param {String} ID - ID del elemento.
-     * @returns {Object|null} - Elemento si se encuentra, o null si no es encontrado.
+     * @param {Object} cond - Condiciones de busqueda.
+     * @returns {Array} - Array de elementos encontrados.
     */
-   async get(id) {
+   async get(cond) {
        try {
-           return await this.model.findById(id);
+           return await this.model.find(cond);
         } catch (error) {
             throw new Error(error.message);
         }
     }
+
+    /**
+     * Busca un elemento por su ID y lo devuelve
+     * @param {String} Id - Id del elemento.
+     * @returns {Object|null} - Elemento si se encuentra, o null si no es encontrado.
+    */
+    async getById(id) {
+        try {
+            return await this.model.findById(id);
+         } catch (error) {
+             throw new Error(error.message);
+         }
+     }
     
     /**
      * Crea un elemento con sus datos
@@ -31,12 +44,14 @@ export default class MongoDao {
     
     /**
      * Modifica un elemento buscado por su ID
-     * @param {String} ID - ID del elemento.
+     * @param {String} id - Id del elemento.
+     * @param {Object} obj - Objeto de modificaciones
+     * @param {Boolean} newItem - Opcion de devolver el item nuevo
      * @returns {Object|null} - Informacion del cambio realizado.
     */
-   async update(id, obj) {
+   async update(conditions, obj, newItem = true) {
        try {
-           return await this.model.findByIdAndUpdate({ _id: id }, { obj }, { new: true });
+           return await this.model.updateOne(conditions, obj, { new: newItem });
         } catch (error) {
             throw new Error(error.message);
         }
@@ -44,7 +59,7 @@ export default class MongoDao {
     
     /**
      * Elimina un elemento buscado por su ID
-     * @param {String} ID - ID del elemento.
+     * @param {String} id - Id del elemento.
      * @returns {Object} - Informacion del cambio realizado.
     */
    async delete(id) {

@@ -1,3 +1,9 @@
-import {passportAuth} from "../controllers/authController.js"
+import AuthController from "../controllers/authController.js";
 
-export const ensureAuth = passportAuth('current', { session: false });
+const AC = new AuthController();
+const { passportAuth } = AC;
+
+export const ensureAuth = (req, res, next) => {
+    const authenticate = passportAuth('current', { session: false });
+    authenticate(req, res, next);
+}

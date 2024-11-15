@@ -23,7 +23,7 @@
     Se deberá poder buscar productos por categoría o por disponibilidad, 
     y se deberá poder realizar un ordenamiento de estos productos de manera ascendente o descendente por precio. 
 */
-export const getFilteredAndSortedProductPaginate = async (req, res) => {
+export const getFilteredAndSortedProductPaginate = async (req, res) => { //FIXME:
     try {
         const limit = req.query.limit || 10;
         const page = req.query.page || 1;

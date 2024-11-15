@@ -1,7 +1,7 @@
 import MongoDao from "./MongoDao.js";
 import { Cart } from "../../models/mongo/Carts.js";
 
-export class CartsDaoMongo extends MongoDao {
+export default class CartsDaoMongo extends MongoDao {
     constructor() {
         super(Cart);
     }
@@ -60,24 +60,6 @@ export class CartsDaoMongo extends MongoDao {
     }
 
     /**
-     * Cambia el array productos del carrito por el array productos
-     * @param {String} cartId - Id del carrito
-     * @param {Array} products - Productos
-     * @returns {Object} - Informacion del cambio
-     */
-    async updateProducts(cartId, products) {
-        try {
-            return await Cart.updateOne(
-                { _id: cartId },
-                { $set: {products}},
-                { new: true }
-            );
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    }
-
-    /**
      * Elimina un producto del carrito
      * @param {String} cartId - Id de carrito
      * @param {String} prodId - Id de producto
@@ -85,13 +67,10 @@ export class CartsDaoMongo extends MongoDao {
      */
     async removeProduct(cartId, prodId) {
         try {
-            if (!await this.getProduct(cartId, prodId)) {
-                throw new Error("No existe el producto en el carrito");
-            }
-            return await this.model.findOneAndUpdate(
+            return await this.update(
                 { _id: cartId }, 
                 { $pull: { products: { product: prodId } } }, 
-                { new: true }
+                true
             );
         } catch (error) {
             throw new Error(error.message);
@@ -107,11 +86,11 @@ export class CartsDaoMongo extends MongoDao {
      */
     async updateProductQuantity(cartId, prodId, quantity) {
         try {
-            return await this.model.findOneAndUpdate(
+            return console.log(await this.model.findOneAndUpdate(
                 { _id: cartId, "products.product": prodId },
                 { $set: { "products.$.quantity": quantity } },
                 { new: true }
-            );
+            ));
         } catch (error) {
             throw new Error(error.message);
         }

@@ -1,6 +1,9 @@
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { CLIENT_ID_GOOGLE, CLIENT_SECRET_GOOGLE, SECRET_KEY } from "../config/config.js";
-import { createUser, getUserByEmail } from "../services/userServices.js";
+import UserServices from "../services/userServices.js";
+
+const US = new UserServices();
+const { getUserByEmail, createUser } = US;
 
 // Callback URL: http://localhost:8080/users/oauth2/redirect/accounts.google.com
 
@@ -9,7 +12,6 @@ const strategyConfig = {
     clientSecret: CLIENT_SECRET_GOOGLE,
     callbackURL: "/api/auth/oauth2/redirect/accounts.google.com",
     scope: ["profile", "email"],
-    
 };
 
 const registerOrLogin = async (accessToken, refreshToken, profile, done) => {

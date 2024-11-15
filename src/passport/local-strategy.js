@@ -1,6 +1,8 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import * as userServices from "../services/userServices.js";
+import UserServices from "../services/userServices.js";
 import * as authServices from "../services/authServices.js";
+
+const userServices = new UserServices();
 
 const strategyConfig = {
     usernameField: "email",

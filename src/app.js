@@ -31,8 +31,8 @@ app.use(passport.initialize());
 // Routes
 app.use("/api", routes);
 
-app.get("/", getFilteredAndSortedProductPaginate);
-
 app.use("/", handlebarsRouter);
+
+app.get("/", getFilteredAndSortedProductPaginate);
 
 export default app;

@@ -15,6 +15,7 @@ program
         "-db, --database <string>",
         "Base de datos",
         value => value.toUpperCase(),
+        "MONGO"
     );
     
     program.parse(process.argv);
